@@ -1,14 +1,17 @@
 const Queue = require('bee-queue');
 
-const options = {
+let options = {
     isWorker: false,
     sendEvents: false,
     redis: {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
-        password: process.env.DB_PASS,
     },
-}
+};
+
+if (process.env.DB_PASS) {
+    redis.password = process.env.DB_PASS
+};
 
 const cookQueue = new Queue('cook', options);
 
