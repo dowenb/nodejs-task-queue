@@ -6,6 +6,9 @@
 </head>
 
 <body>
+    <h1><a href="index.html">Snack Stack Shack</a></h1>
+    <h2>Restauant Status</h2>
+    <div id="message"></div>
     <script>
         const statusMessage = fetch("http://localhost:5000");
         statusMessage.then((response) => response.json())
@@ -19,7 +22,6 @@
                 console.error
             );
     </script>
-    <div id="message"><h1>Restauant Status</h1></div>
 </body>
 
 </html>

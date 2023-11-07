@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Restauant Homepage</title>
+</head>
+
+<body>
+    <h1><a href="index.html">Snack Stack Shack</a></h1>
+    <h2>Restauant Status</h2>
+    <div id="message">
+    </div>
+    <div id="links">
+        <ul>
+            <li><a href="new_order.html">New Order</a></li>
+            <li><a href="order_status.html">Order Status</a></li>
+            <li><a href="status.html">Restauant Status</a></li>
+        </ul>
+    </div>
+    <script>
+        const statusMessage = fetch("http://localhost:5000");
+        statusMessage.then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const displayMessage = document.getElementById("message");
+                const newItem = document.createElement('span');
+                newItem.innerHTML = 'We are opening and taking orders!';
+                displayMessage.appendChild(newItem)
+            }).catch((e) => {
+                console.error(e)
+                const displayMessage = document.getElementById("message");
+                const newItem = document.createElement('span');
+                newItem.innerHTML = "We are close, or expriencing technical difficultiies";
+                displayMessage.appendChild(newItem)
+            });
+    </script>
+</body>
+
+</html>

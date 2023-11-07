@@ -2,12 +2,13 @@
 <html>
 
 <head>
-    <title>Restauant Status</title>
+    <title>New Order</title>
 </head>
 
 <body>
+    <h1><a href="index.html">Snack Stack Shack</a></h1>
+    <h2>New Order</h2>
     <div id="newOrder">
-        <h1>New Order</h1>
         <form action="" id="orderForm">
             <label for="dish">Dish:</label><br />
             <input type="text" id="dish" name="dish"><br />
@@ -59,17 +60,32 @@
                     displayMessage.appendChild(newItem)
                 });
         }
+        // Code from: https://sabe.io/blog/javascript-check-string-positive-integer
+        const isPositiveInteger = string => {
+            const number = Number(string);
+            const isInteger = Number.isInteger(number);
+            const isPositive = number > 0;
+
+            return isInteger && isPositive;
+        }
 
         function handleOrder() {
             console.log("Handling order")
             let dish = document.getElementById("dish");
             let qty = document.getElementById("qty");
+
             if (dish.value == "" || qty.value == "") {
-                console.log("Missing part of your order!")
+                console.log("You must enter both a dish and a qty")
             } else {
-                order = { dish: dish.value, qty: qty.value }
-                console.log("You orderd:" + order)
-                makeOrder(order);
+                if (isPositiveInteger(qty.value)) {
+                    order = { dish: dish.value, qty: qty.value }
+                    console.log("You orderd:" + order)
+                    makeOrder(order);
+                    dish.value = "";
+                    qty.value = "";
+                } else {
+                    console.log("You need to order a qty of 1 or more!")
+                }
             }
         }
 
