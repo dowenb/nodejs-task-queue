@@ -1,5 +1,13 @@
 const Queue = require('bee-queue');
 
+const graylog2 = require('graylog2');
+
+const LOG_HOST = process.env.LOG_HOST || localhost;
+
+const logger = new graylog2.graylog({
+    servers: [{ host: LOG_HOST, port: 12201 }]
+});
+
 let options = {
     isWorker: false,
     sendEvents: false,
@@ -23,6 +31,7 @@ const placeOrder = (order) => {
 cookQueue.on("succeeded", (job) => {
     // Notify the client via push notification, web socket or email etc.
     console.log(`🧾 ${job.data.qty}x ${job.data.dish} ready to be served 😋`);
+    logger.info(`🧾 ${job.data.qty}x ${job.data.dish} ready to be served 😋`);
 });
 
 const getOrderStatus = (orderId) => {
