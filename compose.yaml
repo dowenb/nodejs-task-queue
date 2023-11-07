@@ -2,19 +2,21 @@ services:
   reastuant:
     build: .
     depends_on:
-    - redis
+      - redis
+    ports:
+      - 5000:5000
     networks:
-    - front-tier
-    - back-tier
+      - front-tier
+      - back-tier
     environment:
-    - DB_HOST=redis
-    - DB_PORT=6379
+      - DB_HOST=redis
+      - DB_PORT=6379
     restart: unless-stopped
 
   redis:
     image: redis:7.2.3-alpine3.18
     networks:
-    - back-tier
+      - back-tier
 
 networks:
   front-tier:

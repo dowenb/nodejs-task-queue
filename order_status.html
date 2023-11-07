@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Restauant Status</title>
+</head>
+
+<body>
+    <script>
+        let params = new URLSearchParams(document.location.search);
+        let orderId = params.get("orderId");
+        if (!orderId) {
+            console.log("Missing orderId")
+        } else {
+            const statusMessage = fetch("http://localhost:5000/order/"+orderId);
+            statusMessage.then((response) => response.json())
+                .then((data) => {
+                    const messageText = data.progress;
+                    const displayMessage = document.getElementById("message");
+                    const newItem = document.createElement('span');
+                    newItem.innerHTML = '<p>' + messageText + '</p>';
+                    displayMessage.appendChild(newItem)
+                }).catch((e) => {
+                    console.error(e)
+                    const messageText = "An error occured, panic, you're snack may be lost!!"
+                    const displayMessage = document.getElementById("message");
+                    const newItem = document.createElement('span');
+                    newItem.innerHTML = '<p>' + messageText + '</p>';
+                    displayMessage.appendChild(newItem)
+                }
+                );
+        }
+    </script>
+    <div id="message">
+        <h1>Order Status</h1>
+    </div>
+</body>
+
+</html>

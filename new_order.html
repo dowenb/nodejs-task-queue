@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Restauant Status</title>
+</head>
+
+<body>
+    <div id="newOrder">
+        <h1>New Order</h1>
+        <form action="" id="orderForm">
+            <label for="dish">Dish:</label><br />
+            <input type="text" id="dish" name="dish"><br />
+            <label for="qty">Qty:</label><br />
+            <input type="text" id="qty" name="qty"><br />
+            <input type="submit">
+        </form>
+    </div>
+    <div id="message">
+
+    </div>
+    <script>
+        async function postJSON(data) {
+            let result;
+            try {
+                const response = await fetch("http://localhost:5000/order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+                result = await response.json();
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            return result
+        }
+
+        // steakOrder = { dish: "Steak", qty: 1 }
+        // Might need to make this async
+        function makeOrder(order) {
+            makeOrder = postJSON(order)
+                .then((data) => {
+                    console.log("Order number:" + data.order)
+                    const messageText = "Order: " + data.order + " has been sent to the kitchen";
+                    const displayMessage = document.getElementById("message");
+                    const newItem = document.createElement('span');
+                    newItem.innerHTML = '<p>' + messageText + '</p><br /><p>Check your order status: </p><a href="order_status.html?orderId=' + data.order + '">here</a>';
+                    displayMessage.appendChild(newItem)
+                })
+                .catch((e) => {
+                    console.error(e)
+                    const messageText = "An error occured, panic, you're snack may be lost!!"
+                    const displayMessage = document.getElementById("message");
+                    const newItem = document.createElement('span');
+                    newItem.innerHTML = '<p>' + messageText + '</p>';
+                    displayMessage.appendChild(newItem)
+                });
+        }
+
+        function handleOrder() {
+            console.log("Handling order")
+            let dish = document.getElementById("dish");
+            let qty = document.getElementById("qty");
+            if (dish.value == "" || qty.value == "") {
+                console.log("Missing part of your order!")
+            } else {
+                order = { dish: dish.value, qty: qty.value }
+                console.log("You orderd:" + order)
+                makeOrder(order);
+            }
+        }
+
+        let orderForm = document.getElementById("orderForm");
+
+        orderForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            handleOrder();
+        });
+
+    </script>
+</body>
+
+</html>

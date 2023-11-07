@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Restauant Status</title>
+</head>
+
+<body>
+    <script>
+        const statusMessage = fetch("http://localhost:5000");
+        statusMessage.then((response) => response.json())
+            .then((data) => {
+                const messageText = data.message;
+                const displayMessage = document.getElementById("message");
+                const newItem = document.createElement('span');
+                newItem.innerHTML = '<p>' + messageText + '</p>';
+                displayMessage.appendChild(newItem)
+            }).catch(
+                console.error
+            );
+    </script>
+    <div id="message"><h1>Restauant Status</h1></div>
+</body>
+
+</html>

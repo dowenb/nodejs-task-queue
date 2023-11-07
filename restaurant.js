@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const http = require('http');
 
@@ -10,6 +11,7 @@ const {
 
 // Inits
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
@@ -17,7 +19,9 @@ app.use(express.urlencoded({
 
 // Routes
 app.get('/', (req, res) => {
-    res.send("😋 We are serving freshly cooked food 🍲");
+    res.json({
+        message: "😋 We are serving freshly cooked food 🍲"
+    })
 });
 
 app.post('/order', (req, res) => {
@@ -74,7 +78,7 @@ app.get("/order/:id", (req, res) => {
         res.sendStatus(400);
         return;
     };
-    
+
     getStatus(orderId).then((result) => {
         res.json({
             progress: result.status == "succeeded" ? `Your order is ready 😊` : `Your order is ⏲ ${result.progress}% ready`,
